@@ -93,7 +93,7 @@ with col1:
     st.markdown('Min<br>Average<br>Max<br>Total', unsafe_allow_html=True)
     
 with col2:
-    st.markdown('<h3>Upvotes 🡅</h3>', unsafe_allow_html=True)
+    st.markdown('<h3>Upvotes &#x1F845</h3>', unsafe_allow_html=True)
     st.markdown('<br>'.join(df_reactions.iloc[0].astype('int64').astype('str').to_list()), unsafe_allow_html=True)
 
 with col3:
