@@ -1,5 +1,5 @@
 # 9vision | a 9gag dashboard
-Public data only. No log-in required.
+Public data only. No log-in required.<br>
 User names from present scraped data have been changed to random names.
 
 The main point here is to use selenium to pilot a webrowser (Microsoft Edge) to scroll through a user profile on 9gag.com, and save data along the way, so we can display multiple vizualizations afterwards.
