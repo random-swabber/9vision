@@ -7,6 +7,7 @@ from PIL import Image
 from os import listdir
 from os import path
 
+
 st.set_page_config(page_title="9vision", page_icon='👁',menu_items={"About":'*bandev2022*'})
 
 # Selecting user
@@ -25,10 +26,10 @@ with open(f'./data/{user}/{user}_meta.json', 'r', encoding='utf-8') as f:
 scrap_date = datetime.strptime(data['scrap_date'], '%d-%m-%Y')
 nb_posts = df.shape[0]
 
-df_actions = pd.read_csv(f'./data/{user}/{user}_reactions.csv')
-df_actions_sections = df_actions.groupby('section').count()[['link']].rename(columns={'link':'count'})
-
-
+df_comments = pd.read_csv(f'./data/{user}/{user}_reactions.csv')
+df_comments_sections = df_comments.groupby('section').count()[['link']].rename(columns={'link':'count'})
+nb_comments = df_comments.shape[0]
+activity_ratio = round(nb_posts / (nb_posts + nb_comments),2)
 
 # MAIN TITLE
 st.markdown('<H1 style="color:gold;text-align:center;" >[ 9 \\/ | 5 | 0 |\\| ]</H1><br><br><br>', unsafe_allow_html=True)
@@ -38,13 +39,21 @@ st.markdown('<H1 style="color:gold;text-align:center;" >[ 9 \\/ | 5 | 0 |\\| ]</
 # META USER
 st.markdown(f'<h2>{data["alias"]}</h2>', unsafe_allow_html=True)
 
-user_col1, user_col2 = st.columns([1, 4])
+user_col1, user_col2, user_col3, user_col4 = st.columns([1.5,2,2,1])
 with user_col1:
     st.markdown(f'<img src="{data["avatar_link"]}">', unsafe_allow_html=True)
 
 with user_col2:
-    st.markdown(f'@{user}<br>{data["nb_days"]} days<br>{nb_posts} posts<br>last update {datetime.strftime(scrap_date, "%d %b %y")}', unsafe_allow_html=True)
+    st.markdown(f'<br>@{user}<br>{data["nb_days"]} days<br>\
+    last update {datetime.strftime(scrap_date, "%d %b %y")}',
+    unsafe_allow_html=True)
 
+with user_col3:
+    st.markdown(f'<br>{nb_posts} posts<br>\
+    {nb_comments} comments<br>\
+    Activity ratio <meter id="disk_c" value="{int(activity_ratio * 100)}" min="0" low="34" high="60" optimum = "100" max="100"></meter><br>',
+    unsafe_allow_html=True)
+    
 
 
 # FAVORIT SECTIONS
@@ -105,5 +114,5 @@ st.image(word_cloud)
 
 
 # REACTIONS to COMMUNITY
-st.markdown('<br><hr><br><h2>Reactions to other posts</h2>', unsafe_allow_html=True)
-st.bar_chart(df_actions_sections)
+st.markdown('<br><hr><br><h2>Community posts commented</h2>', unsafe_allow_html=True)
+st.bar_chart(df_comments_sections)
